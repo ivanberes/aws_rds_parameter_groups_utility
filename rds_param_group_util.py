@@ -133,6 +133,10 @@ def copy_rds_parameters(source_rds_client_obj, source_param_group, dest_rds_clie
     source_description = source_summary["DBParameterGroups"][0]["Description"]
     source_parameters = return_all_modifiable_parameters_with_value_from_parameter_group(source_rds_client_obj, source_param_group)
     groups_in_dest_region = return_parameter_groups(dest_rds_client_obj)
+    
+    maxconn=next((i for i, item in enumerate(source_parameters) if item["ParameterName"] == "max_connections"), None)
+    print (maxconn)
+    source_parameters.pop(maxconn)
 
     # Error if 'dest_param_group' already exists.
     if dest_param_group in groups_in_dest_region:
